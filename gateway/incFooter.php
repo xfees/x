@@ -1,0 +1,1 @@
+<div class="footer">&copy; Indiatimes.com <?php echo date("Y", strtotime("now")) ?></div>
