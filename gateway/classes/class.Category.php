@@ -1,14 +1,13 @@
 <?php
-class Section {
+class Category {
 	protected $finalData = array();
 	private $db;
 	private $tableName;
 	/********************* START OF CONSTRUCTOR *******************************/
 	public function __construct() {
-		$this -> tableName = 'section';
+		$this -> tableName = 'category';
 		$this -> db = Database::Instance();
 	}
-
 	/**************************** END OF CONSTRUCTOR **************************/
 	public function getListingData($search, $offset, $recperpage, $searchData, $status = '') {
 		$keyValueArray = array();
@@ -27,10 +26,10 @@ class Section {
 		
 		if ($search == 'byname') {
 			$keyValueArray['sqlclause'] = "name like '$searchData%'";
-		}else if ($search == 'integer') {
+		} elseif ($search == 'integer') {
 			$keyValueArray['sqlclause'] = "substring(name,1,1) between '0' AND '9'";
-		}else if ($search == 'by_section') {
-			if($searchData !=''){
+		} elseif ($search == 'by_section') {
+			if($searchData !='') {
 				$keyValueArray['sqlclause'] = "parentid = $searchData ";
 			}
 		}
@@ -115,10 +114,10 @@ class Section {
 		return $rowCount;
 	}// eof toggleStatus
 
-	public function getSectionTree1($level, $curr = 0) {
+	public function getCategoryTree1($level, $curr = 0) {
 		// initialize container array
-		if (!isset($this -> sectionTree) || $curr == 0) {
-			$this -> sectionTree = array();
+		if (!isset($this -> categoryTree) || $curr == 0) {
+			$this -> categoryTree = array();
 			$this -> excludes = array();
 		}
 
@@ -135,12 +134,11 @@ class Section {
 			}
 		}
 	}
-	
-	//this is used in navigation.php for search by section name
-	public function getParentSectionTree($val) {
+	//this is used in navigation.php for search by category name
+	public function getParentCategoryTree($val) {
 		// initialize container array
-		if (!isset($this -> sectionTree) || $curr == 0) {
-			$this -> sectionTree = array();
+		if (!isset($this -> categoryTree) || $curr == 0) {
+			$this -> categoryTree = array();
 			$this -> excludes = array();
 		}
 		$arrWhere = array();
@@ -151,19 +149,19 @@ class Section {
 		$dataArr = $this -> db -> getDataFromTable($arrWhere, $this -> tableName, "id, name, parentid", $orderby, $limit);
 		foreach ($dataArr as $r) {
 			if (!in_array($r['id'], $this -> excludes)) {
-				$arrSectionTree[$r['id']] = $r['name'];
+				$arrCategoryTree[$r['id']] = $r['name'];
 				if($val != ''){
 					if($val == $r['id'] || $r['id'] == $this ->getimediateparent($val)  ){
 						$arrWhere['parentid'] = $r['id'];
 						$dataArr2 = $this -> db -> getDataFromTable($arrWhere, $this -> tableName, "id, name, parentid", $orderby, $limit);
 						foreach ($dataArr2 as $r2) {
-							$arrSectionTree[$r2['id']] = "---x---" . $r2['name'];
+							$arrCategoryTree[$r2['id']] = "---x---" . $r2['name'];
 						}
 					}
 				}
 			}
 		}
-		return $arrSectionTree;
+		return $arrCategoryTree;
 	}
 	
 	public function getimediateparent($childid){
@@ -174,171 +172,136 @@ class Section {
 		return $datapsecArr[0]['parentid'];
 	}
 	
-	public function getSectionTree() {
-		$arrSectionTree = array();
+	public function getCategoryTree() {
+		$arrCategoryTree = array();
 		$arrWhere = array();
 		$arrWhere['status'] = 1;
 		$arrWhere['parentid'] = 0;
 		$orderby = 'name';
 		$limit = '';
 		$dataArr = $this -> db -> getDataFromTable($arrWhere, $this -> tableName, "id, name, parentid", $orderby, $limit);
-
 		foreach ($dataArr as $r) {
-			$arrSectionTree[$r['id']] = $r['name'];
-
+			$arrCategoryTree[$r['id']] = $r['name'];
 			$arrWhere['parentid'] = $r['id'];
 			$dataArr1 = $this -> db -> getDataFromTable($arrWhere, $this -> tableName, "id, name, parentid", $orderby, $limit);
 			//print_r($dataArr1);
 			foreach ($dataArr1 as $r1) {
-				$arrSectionTree[$r1['id']] = "---" . $r1['name'];
+				$arrCategoryTree[$r1['id']] = "---" . $r1['name'];
 
 				$arrWhere['parentid'] = $r1['id'];
 				$dataArr2 = $this -> db -> getDataFromTable($arrWhere, $this -> tableName, "id, name, parentid", $orderby, $limit);
 				//print_r($dataArr2);
 				foreach ($dataArr2 as $r2) {
-					$arrSectionTree[$r2['id']] = "---x---" . $r2['name'];
+					$arrCategoryTree[$r2['id']] = "---x---" . $r2['name'];
 				}
 			}
 		}
-
-		return $arrSectionTree;
+		return $arrCategoryTree;
 	}
 
-	public function getSectionTreeparent() {
-		$arrSectionTree = array();
-		$arrWhere = array();
-		$arrWhere['status'] = 1;
-		$arrWhere['parentid'] = 0;
-		$orderby = 'id';
-		$limit = '';
-		$dataArr = $this -> db -> getDataFromTable($arrWhere, $this -> tableName, "id, name, parentid", $orderby, $limit);
+    public function getCategoryTreeparent() {
+        $arrCategoryTree = array();
+        $arrWhere = array();
+        $arrWhere['status'] = 1;
+        $arrWhere['parentid'] = 0;
+        $orderby = 'id';
+        $limit = '';
+        $dataArr = $this -> db -> getDataFromTable($arrWhere, $this -> tableName, "id, name, parentid", $orderby, $limit);
+        foreach ($dataArr as $r) {
+	        $arrCategoryTree[$r['id']] = $r['name'];
+        }
+        return $arrCategoryTree;
+    }
 
-		foreach ($dataArr as $r) {
-			$arrSectionTree[$r['id']] = $r['name'];
-
-			//$arrWhere['parentid'] = $r['id'];
-			//$dataArr1 = $this -> db -> getDataFromTable($arrWhere, $this -> tableName, "id, name, parentid", $orderby, $limit);
-			//print_r($dataArr1);
-			/*foreach ($dataArr1 as $r1) {
-				$arrSectionTree[$r1['id']] = "---" . $r1['name'];
-
-				$arrWhere['parentid'] = $r1['id'];
-				$dataArr2 = $this -> db -> getDataFromTable($arrWhere, $this -> tableName, "id, name, parentid", $orderby, $limit);
-				//print_r($dataArr2);
-				foreach ($dataArr2 as $r2) {
-					$arrSectionTree[$r2['id']] = "---x---" . $r2['name'];
-				}
-			}*/
-		}
-
-		return $arrSectionTree;
-	}
-
-	public function getSectionTreelist($parentid=0) {
-		$arrSectionTree = array();
-		$arrWhere = array();
-		$arrWhere['status'] = 1;
-		$arrWhere['parentid'] = $parentid;
-		$orderby = 'name';
-		$limit = '';
-		$dataArr = $this -> db -> getDataFromTable($arrWhere, $this -> tableName, "id, name, parentid, priority, is_tab", $orderby, $limit);
+    public function getCategoryTreelist($parentid = 0, $status = 1) {
+        $arrCategoryTree = array();
+        $arrWhere = array();
+        $arrWhere['status'] = $status;
+        $arrWhere['parentid'] = $parentid;
+        $orderby = 'name';
+        $limit = '';
+        $dataArr = $this -> db -> getDataFromTable($arrWhere, $this -> tableName, "id, name, parentid, priority", $orderby, $limit);
         $all_sections_id = array();
 
-		foreach ($dataArr as $r) {
-			$arrSectionTree[$r['id']]['data'] = $r['name'];
-			$arrSectionTree[$r['id']]['priority'] = $r['priority'];
-			$arrSectionTree[$r['id']]['is_tab'] = $r['is_tab'];
-			$arrSectionTree[$r['id']]['childs'] = array();
-                       
-			$arrWhere['parentid'] = $r['id'];
-			$dataArr1 = $this -> db -> getDataFromTable($arrWhere, $this -> tableName, "id, name, parentid, priority, is_tab", $orderby, $limit);
-                        
-                        $all_sections_id[] = $r['id'];
-			//print_r($dataArr1);
-			foreach ($dataArr1 as $section_key => $r1) {
-				//$arrSectionTree[$r1['id']] = "---" . $r1['name'];
-				$arrSectionTree[$r['id']]['childs'][$r1['id']] = array();
-				$arrSectionTree[$r['id']]['childs'][$r1['id']]['data'] = $r1['name'];
-				$arrSectionTree[$r['id']]['childs'][$r1['id']]['priority'] = $r1['priority'];
-				$arrSectionTree[$r['id']]['childs'][$r1['id']]['is_tab'] = $r1['is_tab'];
-				$arrSectionTree[$r['id']]['childs'][$r1['id']]['childs'] = array();
-                                $all_sections_id[] = $r1['id'];
+        foreach ($dataArr as $r) {
+            $arrCategoryTree[$r['id']]['data'] = $r['name'];
+            $arrCategoryTree[$r['id']]['priority'] = $r['priority'];
+            $arrCategoryTree[$r['id']]['childs'] = array();
 
-				$arrWhere['parentid'] = $r1['id'];
-				$dataArr2 = $this -> db -> getDataFromTable($arrWhere, $this -> tableName, "id, name, parentid, is_tab", $orderby, $limit);
+            $arrWhere['parentid'] = $r['id'];
+            $dataArr1 = $this -> db -> getDataFromTable($arrWhere, $this -> tableName, "id, name, parentid, priority", $orderby, $limit);
 
-				//print_r($dataArr2);
-				foreach ($dataArr2 as $section_key2 => $r2) {                                  
-					//$arrSectionTree[$r2['id']] = "---x---" . $r2['name'];
-					$arrSectionTree[$r['id']]['childs'][$r1['id']]['childs'][$r2['id']] = array();
-					$arrSectionTree[$r['id']]['childs'][$r1['id']]['childs'][$r2['id']]['data'] = $r2['name'];
-					$arrSectionTree[$r['id']]['childs'][$r1['id']]['childs'][$r2['id']]['priority'] = $r1['priority'];
-					$arrSectionTree[$r['id']]['childs'][$r1['id']]['childs'][$r2['id']]['is_tab'] = $r1['is_tab'];
-                                        $all_sections_id[] = $r2['id'];
-				}
-			}
-		}
-                if ( 0 < count($all_sections_id) )
-                {
-                    $keyValueArray['sqlclause'] = ' section_id in('.implode(',',$all_sections_id).') and c.is_aggregator_data=0 and csr.is_primary=1 and c.status!=-1 group by section_id';
-                    $stories_counts = $this->db->getDataFromTable($keyValueArray, "content_section_relation as csr LEFT JOIN content as c on csr.content_id=c.id", "count(csr.id) as count,csr.section_id");
+            $all_sections_id[] = $r['id'];
+            foreach ($dataArr1 as $category_key => $r1) {
+                $arrCategoryTree[$r['id']]['childs'][$r1['id']] = array();
+                $arrCategoryTree[$r['id']]['childs'][$r1['id']]['data'] = $r1['name'];
+                $arrCategoryTree[$r['id']]['childs'][$r1['id']]['priority'] = $r1['priority'];
+                $arrCategoryTree[$r['id']]['childs'][$r1['id']]['childs'] = array();
+                $all_sections_id[] = $r1['id'];
 
-                    foreach($arrSectionTree as $key =>$section_data) {
-                        if(isset($section_data['childs']) && !empty($section_data['childs'])) {
-                            $childs = array();
-                            $childs = $section_data['childs'];
-                            foreach($childs as $section_key=>$child){
-                            foreach($stories_counts as $story_count) {
-                                    if($story_count['section_id']==$section_key){
-                                        $arrSectionTree[$key]['childs'][$section_key]['story_count'] = $story_count['count'];
-                                    }
-                                }
+                $arrWhere['parentid'] = $r1['id'];
+                $dataArr2 = $this -> db -> getDataFromTable($arrWhere, $this -> tableName, "id, name, parentid", $orderby, $limit);
+                foreach ($dataArr2 as $category_key2 => $r2) {                                  
+                    $arrCategoryTree[$r['id']]['childs'][$r1['id']]['childs'][$r2['id']] = array();
+                    $arrCategoryTree[$r['id']]['childs'][$r1['id']]['childs'][$r2['id']]['data'] = $r2['name'];
+                    $arrCategoryTree[$r['id']]['childs'][$r1['id']]['childs'][$r2['id']]['priority'] = $r1['priority'];
+                    $all_sections_id[] = $r2['id'];
+                }
+            }
+        }
+        if ( 0 < count($all_sections_id) ) {
+            $keyValueArray['sqlclause'] = ' category_id in('.implode(',', $all_sections_id).') and status != -1 group by category_id';
+            $stories_counts = $this->db->getDataFromTable($keyValueArray, "content as c", "count(c.id) as count,c.category_id");
+            foreach ($arrCategoryTree as $key =>$category_data) {
+                if (isset($category_data['childs']) && !empty($category_data['childs'])) {
+                    $childs = array();
+                    $childs = $category_data['childs'];
+                    foreach ($childs as $category_key=>$child) {
+                        foreach ($stories_counts as $story_count) {
+                            if ($story_count['category_id']==$category_key) {
+                                $arrCategoryTree[$key]['childs'][$category_key]['story_count'] = $story_count['count'];
                             }
-                        } else {
-                            foreach($stories_counts as $story_count) {
-                                    if($story_count['section_id']==$key){
-                                        $arrSectionTree[$key]['story_count'] = $story_count['count'];
-                                    }
-                                }
+                        }
+                    }
+                } else {
+                    foreach ($stories_counts as $story_count) {
+                        if ($story_count['category_id']==$key) {
+                            $arrCategoryTree[$key]['story_count'] = $story_count['count'];
                         }
                     }
                 }
-                
+            }
+        }
+        return $arrCategoryTree;
+    }
 
-		return $arrSectionTree;
-	}
-
-	public function getParentSection() {
-		$arrSectionTree = array();
-		$arrWhere = array();
-		$arrWhere['status'] = 1;
-		$arrWhere['parentid'] = 0;
-
-		$orderby = 'id';
-		$limit = '';
-		$dataArr = $this -> db -> getDataFromTable($arrWhere, $this -> tableName, "id, name, parentid", $orderby, $limit);
-
-		foreach ($dataArr as $r) {
-			$arrSectionTree[$r['id']] = $r['name'];
-		}
-
-		return $arrSectionTree;
-	}
+    public function getParentCategory() {
+        $arrCategoryTree = array();
+        $arrWhere = array();
+        $arrWhere['status'] = 1;
+        $arrWhere['parentid'] = 0;
+        $orderby = 'id';
+        $limit = '';
+        $dataArr = $this -> db -> getDataFromTable($arrWhere, $this -> tableName, "id, name, parentid", $orderby, $limit);
+        foreach ($dataArr as $r) {
+            $arrCategoryTree[$r['id']] = $r['name'];
+        }
+        return $arrCategoryTree;
+    }
       
-	public function getSectionDdl() {
-		$arrData = $this->getSectionTree();
-		$strReturn = '<select id="parentsectionname" name="parentid" class="select"><option value="">--SELECT PARENT ID--</option>';
-		foreach($arrData as $id => $section) { 
-			$strReturn .= '<option value="'.$id.'">'.$section.'</option>';
-		}
-		$strReturn .= '</select>';
-		
-		return $strReturn;
-	}
+    public function getCategoryDdl() {
+        $arrData = $this->getCategoryTree();
+        $strReturn = '<select id="parentsectionname" name="parentid" class="select"><option value="">--SELECT PARENT ID--</option>';
+        foreach ($arrData as $id => $section) { 
+            $strReturn .= '<option value="'.$id.'">'.$section.'</option>';
+        }
+        $strReturn .= '</select>';
+        return $strReturn;
+    }
 	  
-    public function updateSectionName($id,$section_value) {
-       $this -> db -> updateDataIntoTable(array("section_name" => $section_value), array("section_id " => intval($id)), 'content_section_relation',false);
-	   $this -> db -> updateDataIntoTable(array("section_parentname" => $section_value), array("section_parentid " => intval($id)), 'content_section_relation',false);
+    public function updateCategoryName($id,$category_value) {
+        $this -> db -> updateDataIntoTable(array("category_name" => $category_value), array("category_id " => intval($id)), 'content_category_relation',false);
+        $this -> db -> updateDataIntoTable(array("category_parentname" => $category_value), array("category_parentid " => intval($id)), 'content_category_relation',false);
     }
 }
-?>
+

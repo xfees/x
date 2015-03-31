@@ -2,9 +2,8 @@
 /************************************************** Include Configuration Files*********************************** */
 include_once ('../config.php');
 
-$_SESSION['TOPMENU'] = "author";
-$filename = strtolower($_SESSION['TOPMENU']);
-$main_file = "get{$filename}.php";
+$_SESSION['TOPMENU'] = CUR_DIR;
+$curDir = ucfirst(CUR_DIR);
 
 if (isset($_GET['id']) && !empty($_GET['id'])) {
     $modelObj = new Author();
@@ -18,12 +17,11 @@ $modules_array = explode(',', $data['cmsmodules_id']);
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<title>Author Management</title>
+		<title><?php echo $curDir ?> Management</title>
 		<?php  include_once '../incHeaderScript.php'; ?>
 		<link href="<?php echo CSSFILEPATH;?>/highslide_popup.css" rel="stylesheet" type="text/css" />
 		<script type='text/javascript' src='<?php echo JSFILEPATH;?>/tiny_mce/tiny_mce.js'></script>
-		<script type='text/javascript' src='author.js'></script>
-		
+		<script type='text/javascript' src='module.js'></script>
 		<!--  for media plugin -->
 		<script type="text/javascript" src="<?php echo CMSSITEPATH; ?>/plugins/media/media.js"></script>
         <script>
@@ -42,7 +40,7 @@ $modules_array = explode(',', $data['cmsmodules_id']);
 	<body>		
 		<?php include_once (CMSROOTPATH . "/topmenu.php"); ?>
 		<div class="content">
-			<div class="title">Author Management</div> 
+			<div class="title"><?php echo $curDir ?> Management</div> 
 			<table width="100%" border="0" cellspacing="0" cellpadding="0">
 				<tr>					
 					<td valign="top" class="rightPanel">
@@ -57,14 +55,14 @@ $modules_array = explode(',', $data['cmsmodules_id']);
 							<td class="boxMiddleMiddle">
 							<div id="tabs" class="padding12">								
 								<span class="iconBack">&nbsp;</span>
-								<a  href="display.php" style="cursor: pointer;"><span id="addEditText">Go To</span> Authors List</a>
+								<a  href="display.php" style="cursor: pointer;"><span id="addEditText">Go To</span> <?php echo $curDir ?> List</a>
 								<span id="backtomodule" style="margin-right: 5px;"></span>
 							</div> 
 							<!--content display starts here -->
     <div id="mainContainer">
        <div id="editcontent">
 			<div class="line"></div>
-			<form name="dataform" id="dataform" enctype="multipart/form-data" method="post" action="getauthor.php" onsubmit="return saveAuthor();">
+			<form name="dataform" id="dataform" enctype="multipart/form-data" method="post" action="get.php" onsubmit="return saveAuthor();">
 			<input type="hidden" value="<?php echo $_GET['id']!=''?'m':'a'; ?>" name="action" id="action" class="hidden" />
 			<input type="hidden" value="<?php echo $_GET['id']!=''?$_GET['id']:''; ?>" name="id" id="id" class="hidden" />
 			<table width="100%" border="0" cellspacing="0" cellpadding="0">

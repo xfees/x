@@ -39,6 +39,8 @@ define('MONGO_COLL_ADMIN_LOG', 'admin_action_log');
 /*eof mongodb conf*/
 
 //constants defined for contenttype management Ends
+$dirPath = explode("/", getcwd());
+define('CUR_DIR', $dirPath[count($dirPath) - 1]);
 define('MAX_FORMS_PER_PAGE', '20');
 define('WEB_SITE_NAME', 'X'); // This constant is required for the Author Management Mail (New author/Password Reset)
 define('DOMAIN_NAME', 'checkfees.in');

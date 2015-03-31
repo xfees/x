@@ -25,50 +25,45 @@ $(function() {
 });
 
 function showAddEditForm(isReset) {
-	  $('#backtomodule').html('<a href="javascript:;" onclick="getReset()"><span class="iconBack">&nbsp;</span>Go Back</a>');
-      $("#dataimage").html('');
-	  $("#addcontent").addClass("selected");
-	  $('.editformimage').remove();  
-	  $('.error').hide();
-	  $('.error1').hide();
-	  $('#divTrash').hide(); 
-	  //alert('here1');
-	  	//clear old vlues
-		if($("#divTxt").length > 0)
-		{
-		$("#divTxt ul").text("");
-		$('#polloptionid').val(1);
-		for (var i=0;i<4;i++)
-		{
-			addFormField();
-		}
-		}
-		
-		if ($("#subsection")){
-		$('#subsection').hide();}
-	  $("#displaycontent").hide();
-	  $("#editcontent, #addpassword").show();
-      $("#delImg,#crossImg, #editpassword").hide();	 
-	  $(".hidden").val("");
-	  $("#action").val("a");
-	  //document.dataform.elements[2].focus();
-	  if(typeof(tinyMCE) != 'undefined'){	//----for setting tinyMCE blank if its present in module
-			tinyMCE.execCommand('mceRemoveControl', false, 'captionid');
-			document.getElementsByTagName('textarea #captionid').value="";
-			tinyMCE.execCommand('mceAddControl', false, 'captionid');  
-			$('#captionid').val('');
-	  }
-	  $('#savebutton').attr('disabled',false);	//-------Enable the save button previously disabled	
-	  $('#formloading').hide();
-	  if(typeof(isReset)!="undefined"){
-		  if(isReset==0) {
-		  	$("form")[0].reset();	
-		  }
-	  }
+    $('#backtomodule').html('<a href="javascript:;" onclick="getReset()"><span class="iconBack">&nbsp;</span>Go Back</a>');
+    $("#dataimage").html('');
+    $("#addcontent").addClass("selected");
+    $('.editformimage').remove();  
+    $('.error').hide();
+    $('.error1').hide();
+    $('#divTrash').hide(); 
+    if($("#divTxt").length > 0)
+    {
+        $("#divTxt ul").text("");
+        $('#polloptionid').val(1);
+        for (var i=0;i<4;i++) {
+            addFormField();
+        }
+    }
+    if ($("#subsection")) {
+        $('#subsection').hide();
+    }
+    $("#displaycontent").hide();
+    $("#editcontent, #addpassword").show();
+    $("#delImg,#crossImg, #editpassword").hide();	 
+    $(".hidden").val("");
+    $("#action").val("a");
+    if (typeof(tinyMCE) != 'undefined') { //----for setting tinyMCE blank if its present in module
+	    tinyMCE.execCommand('mceRemoveControl', false, 'captionid');
+	    document.getElementsByTagName('textarea #captionid').value="";
+	    tinyMCE.execCommand('mceAddControl', false, 'captionid');  
+	    $('#captionid').val('');
+    }
+    $('#savebutton').attr('disabled',false); //-------Enable the save button previously disabled	
+    $('#formloading').hide();
+    if (typeof(isReset)!="undefined") {
+        if(isReset==0) {
+            $("form")[0].reset();	
+        }
+    }
 }
-
 /**** To reset all form values*********/
-function getReset(){
+function getReset() {
 	$(".hidden").val("");
 	$('#divTrash').show(); 
 	$("#backtomodule").html('');
@@ -79,18 +74,15 @@ function getReset(){
 	$("form")[0].reset();
 	$("#editcontent").hide();
 	$("#displaycontent").show();
-	if($("#blackdivlight").length>0) {
+	if ($("#blackdivlight").length > 0) {
 		 $("#blackdivlight").hide();
 	}
-
-	if($("#selectedcontentplaceholder").length>0) {	//for trending keywords
+	if ($("#selectedcontentplaceholder").length>0) {	//for trending keywords
 		$('#selectedcontentplaceholder').hide();	
 	}
 }
-
 /**** To get edit content from getfile*********/
-function getEditDetails(id,filename)
-{  	
+function getEditDetails(id, filename) {  	
 	$('#savebutton').attr('disabled',false);	//-------Enable the save button previously disabled	
 	$('#backtomodule').html('<a href="javascript:;" onclick="getReset()"><span class="iconBack">&nbsp;</span>Go Back</a>');
 	$('#formloading').hide();	
@@ -98,7 +90,7 @@ function getEditDetails(id,filename)
 	$("#delImg, #crossImg , #imgtag, #hdln1").hide();
 	$('#hdlnplaceholder1').show();
 	$("#addcontent").addClass("selected");
-	$.post('get'+filename+".php", {'id' :id, 'action':'e'}, function(data) {// alert(data);
+	$.post('get.php', {'id' :id, 'action':'e'}, function(data) {// alert(data);
 		if(data == '%$#@%') {
 			getReset();
 			showAccessMsg();
@@ -108,28 +100,22 @@ function getEditDetails(id,filename)
 	});
 	$('#divTrash').hide();
 }
-
 /*********** TO ShoW MSG ***************/
 function showAccessMsg(){ //alert('here');
 	var readonlymsg='Permission denied. No action will be performed for this Account.';	
-	//var readonlystr="{'msg':'"+readonlymsg+"'}";	
-	//removeDiv(readonlystr);
-	//Toast.show(readonlymsg, undefined, 2000);
 	Toast.show("Permission denied. No action will be performed for this Account.");
 	return;
-
 }
-
 /**** To Validate Email Address*********/
 function isValidEmail(str) 
 {
-		emailRe = /^\w+([\.-]?\w+)*@\w+([\.-]?(\w)+)*\.(\w{2}|(com|net|org|edu|int|mil|gov|arpa|biz|aero|name|coop|info|pro|museum))$/
-		if (!emailRe.test(str))	
-			return false	
-		else
-			return true				
+    emailRe = /^\w+([\.-]?\w+)*@\w+([\.-]?(\w)+)*\.(\w{2}|(com|net|org|edu|int|mil|gov|arpa|biz|aero|name|coop|info|pro|museum))$/
+    if (!emailRe.test(str))	{
+	    return false
+    } else {
+	    return true
+    }
 }
-
 /**** To Validate The Uploaded File is an Image (.jpg,.gif)*********/
 function isValidImage(str) {
 	var error=0;
@@ -144,24 +130,23 @@ function isValidImage(str) {
 	if(str==".jpg" || str== ".gif" || str==".jpeg")
 	{
 		exterror=0;	//The image is not a .jpg or .gif
-	}else{
+	} else {
 		exterror=1;	
 	}
 	//Check if the imagename is valid
 	var imagename=uploadimg.substring(0,pos);
-	if(isalphanumeric(imagename)==false){
+	if (isalphanumeric(imagename) == false) {
 		nameerror=2;
 	}
-	if(exterror==0 && nameerror==0){
+	if (exterror==0 && nameerror==0){
 		error=0;
-	}else if(exterror!=0){
-		error=exterror;
-	}else if(nameerror!=0){
-		error=nameerror;
+	} else if (exterror!=0){
+		error = exterror;
+	} else if (nameerror!=0){
+		error = nameerror;
 	}
 	return(error);		
 }
-
 /**** To Validate If the given string is a valid URL*********/
 function isValidURL(url)
 {
@@ -175,7 +160,6 @@ function isValidURL(url)
         return false;
     }
 }
-
 /**** To Validate If the given string contains only Alphabets & Numbers, nothing else*********/
 function isalphanumeric(str)
 {
@@ -207,28 +191,28 @@ function isalphanumeric(str)
 /**** To Validate If the given string contains only Numbers, nothing else*********/
 function isNumeric(str)
 {
-		var bReturn = true;
-		var valid="0123456789+- ";
-		var invalidfirst = "+- ";
-		var invalidlast = "+- ";
-		for (var i=0; i<str.length; i++) {
-			if ( i == 0 && (invalidfirst.indexOf(str.charAt(i)) > 0))
-			{
-				bReturn = false;
-				break;
-			}
-			else if ( i == (str.length-1) && (invalidlast.indexOf(str.charAt(i)) > 0))
-			{
-				bReturn = false;
-				break;
-			}
-			else if (valid.indexOf(str.charAt(i)) < 0)
-			{
-				bReturn = false;
-				break;
-			}
+	var bReturn = true;
+	var valid="0123456789+- ";
+	var invalidfirst = "+- ";
+	var invalidlast = "+- ";
+	for (var i=0; i<str.length; i++) {
+		if ( i == 0 && (invalidfirst.indexOf(str.charAt(i)) > 0))
+		{
+			bReturn = false;
+			break;
 		}
-		return(bReturn);
+		else if ( i == (str.length-1) && (invalidlast.indexOf(str.charAt(i)) > 0))
+		{
+			bReturn = false;
+			break;
+		}
+		else if (valid.indexOf(str.charAt(i)) < 0)
+		{
+			bReturn = false;
+			break;
+		}
+	}
+	return(bReturn);
 }
 
 /**** To Delete the content*********/
@@ -236,63 +220,56 @@ var UndoAction = {
 	undoSteps: new Array(),
 	redoSteps: new Array(),
 	undoDelete: function() {
-		if(this.undoSteps.length>0) {
-			var current = this.undoSteps[this.undoSteps.length-1];
-			var filename = current.ajaxPath; 
-			var id = current.id;
-			$.post(filename, {'id':id,'action':'r'}, function(data) 
-					{ 
-						if(data == '%$#@%') {
-							Toast.show("There is some error!");
-							return;
-						}
-						var jObj=eval("("+data+")"); 
-						if(jObj.status==1){
-							var ac = UndoAction.undoSteps.pop();//remove last action
-							UndoAction.redoSteps.push(current); //for future use
-							if(UndoAction.undoSteps.length==0) {
-								UndoAction.hideUndoPanel();
-							}
-							var divID = "singleCont"+jObj.id;
-							FX.come("#"+divID, function() {
-								FX.highlight("#"+divID, function() {
-									//will do something
-								});
-							});
-						}
+	if (this.undoSteps.length > 0) {
+		var current = this.undoSteps[this.undoSteps.length-1];
+		var filename = current.ajaxPath; 
+		var id = current.id;
+		$.post(filename, {'id':id,'action':'r'}, function(data) { 
+			if(data == '%$#@%') {
+				Toast.show("There is some error!");
+				return;
+			}
+			var jObj=eval("("+data+")"); 
+			if (jObj.status==1) {
+				var ac = UndoAction.undoSteps.pop();//remove last action
+				UndoAction.redoSteps.push(current); //for future use
+				if(UndoAction.undoSteps.length==0) {
+					UndoAction.hideUndoPanel();
+				}
+				var divID = "singleCont"+jObj.id;
+				FX.come("#"+divID, function() {
+					FX.highlight("#"+divID, function() {
+						//will do something
 					});
-		}
-		
-			
+				});
+			}
+		});
+	}
 	},
 	addToHistory: function(obj) {
 		this.undoSteps.push(obj);
 	},
 	showUndoPanel: function() {
 		if($("#undeoPanel").length==0) {
-			//$("#mainContainer").before("<div style='display:none' class='undo-panel' id='undeoPanel'><span class='ui-state-default ui-corner-all'><span class='ui-icon ui-icon-arrowreturnthick-1-w' onclick='UndoAction.undoDelete()'>Undo Delete</span></span></div>")
 			var holder = "#mainContainer"
 			if($("#searchResultCnt").length>0) {
 				holder = "#searchResultCnt"
 			}
-			
 			$(holder).before('<div style="display:none" class="undo-panel" id="undeoPanel"><ul class="ui-widget ui-helper-clearfix"><li onclick="UndoAction.undoDelete()" title="Undo Delete" class="ui-state-default ui-corner-all"><span class="ui-icon ui-icon-arrowreturnthick-1-w"></span></li></ul>');
 		} 
 		$("#undeoPanel").slideDown('slow');
-		
 	},
 	hideUndoPanel: function() {
 		$("#undeoPanel").slideUp('slow');
 	}
 }
-
 //desc: compatibale without jquery ui 
 function callDelete(id,filename){
 	var msg = "Are you sure you want to delete this record !!!";
 	if(typeof($.ui)!=="undefined" && typeof(DialogBox)!=="undefined") {
 		//needs jquery UI and tools.js
 		DialogBox.showConfirm(msg, "Delete", function(ok) {
-			if(ok==true) {
+			if(ok == true) {
 				deleteNow();
 			}
 		});
@@ -305,32 +282,30 @@ function callDelete(id,filename){
 	}	
 	//delete now
 	function deleteNow() {		
-		$.post(CMSSITEPATH+'/'+filename+'/get'+filename+".php", {'id':id,'action':'d'}, function(data) 
-				{ 
-					if(data == '%$#@%') {
-						showAccessMsg();
-						return;
-					}
-					//add for history
-					//adding to undo history only if success
-					
-					var jObj=eval("("+data+")"); 
-					if(jObj.status==1){
-						var divID = "singleCont"+jObj.id;
-						var html = $("#"+divID).html();
-						var obj = {ajaxPath:CMSSITEPATH+'/'+filename+'/get'+filename+".php", id:id, module:filename, html:html};
-						UndoAction.addToHistory(obj);
-						UndoAction.showUndoPanel();
-					}
-					removeDiv(data);
-				});
+		$.post(CMSSITEPATH + '/' + filename + '/get.php', {'id':id, 'action':'d'}, function(data) {
+			if(data == '%$#@%') {
+				showAccessMsg();
+				return;
+			}
+			//add for history
+			//adding to undo history only if success
+			var jObj=eval("("+data+")"); 
+			if (jObj.status==1) {
+				var divID = "singleCont"+jObj.id;
+				var html = $("#" + divID).html();
+				var obj = {ajaxPath:CMSSITEPATH + '/' + filename + '/get.php', id:id, module:filename, html:html};
+				UndoAction.addToHistory(obj);
+				UndoAction.showUndoPanel();
+			}
+			removeDiv(data);
+		});
 	}
-} 
+}
 //desc: compatibale without jquery ui
 function callUnDelete(id,filename,pollid)
 {
 	var msg = "Are you sure you want to restore this record !!!";
-	if(typeof($.ui)!=="undefined" && typeof(DialogBox)!=="undefined") {
+	if(typeof($.ui) !== "undefined" && typeof(DialogBox) !== "undefined") {
 		//needs jquery UI and tools.js
 		DialogBox.showConfirm(msg, "Restore", function(ok) {
 			if(ok==true) {
@@ -346,17 +321,15 @@ function callUnDelete(id,filename,pollid)
 	}
 	//restore now
 	function restoreNow() {
-		$.post(CMSSITEPATH+'/'+filename+'/get'+filename+".php", {'id':id, 'action':'r'}, function(data) 
-				{ 
-					if(data == '%$#@%') {
-						showAccessMsg();
-						return;
-					}
-					removeDiv(data);
-				});
+		$.post(CMSSITEPATH + '/' + filename + '/get.php', {'id':id, 'action':'r'}, function(data) {
+			if(data == '%$#@%') {
+				showAccessMsg();
+				return;
+			}
+			removeDiv(data);
+		});
 	}
-} 
-
+}
 /**** To Remove the Deleted div*********/
 //this method needs jquery ui
 function removeDiv(success){ //alert(success);
@@ -413,7 +386,7 @@ function displayContent(success)
 	$('#divTrash').show();
 	if(jObj.status =='1' || jObj.status =='0')
 	{
-		$.post("get"+jObj.module+".php",function(data) 
+		$.post("get.php",function(data) 
 		{
 			$("#mainContainer").html(data);
 			Toast.show(jObj.msg);			
@@ -427,26 +400,11 @@ function changeStatus(id, filename, holder, cb)
 {		
 	var display, title, css;  //alert(id);	
 	var callback = cb;
-	
-	//check if this is content module
-
-	if(filename=="content" || filename=="photogallery" || filename=="aggregatedcontent" || filename=="video") {
-		//check preview data
-		//if not exist show alert
-		//previewData is defined on content module tpl-content
-		//console.log("previewData[id] "+previewData[id]);
-		/*if(parseInt(previewData[id])==0) {
-			Toast.show("Please preview this content first.");
-			return false;
-		}*/
-	}
-
-
 	if(typeof(holder)!="undefined") {
 		publishHolder = holder.id;
 		$("#"+publishHolder).addClass("loaderCircle");
 	}	
-	$.post(CMSSITEPATH+'/'+filename+'/get'+filename+".php",{'id':id, 'action':'p'}, function(resultdata) {	//alert(resultdata);	
+	$.post(CMSSITEPATH + '/' + filename+'/get.php', {'id':id, 'action':'p'}, function(resultdata) {	//alert(resultdata);	
 		if(resultdata == '%$#@%') { //alert('here');
 			$("#"+publishHolder).removeClass("loaderCircle");
 			showAccessMsg();
@@ -513,7 +471,7 @@ function changeFeature(id, filename, holder, cb, status, islive,isFeatured)
 				publishHolder = holder.id;
 				$("#"+publishHolder).addClass("loaderCircle");
 			}	
-			$.post(CMSSITEPATH+'/'+filename+'/get'+filename+".php",{'id':id, 'action':'f'}, function(resultdata) {	//alert(resultdata);	
+			$.post(CMSSITEPATH + '/' + filename + '/get.php',{'id':id, 'action':'f'}, function(resultdata) {	//alert(resultdata);	
 				if(resultdata == '%$#@%') { //alert('here');
 					$("#"+publishHolder).removeClass("loaderCircle");
 					showAccessMsg();
@@ -657,30 +615,6 @@ function searchdata(filename,searchtype,data,currpage,lastpage,firstpage,recperp
 	}
 		
 	var datastring ="search="+searchtype; //alert(datastring) ;
-	if(filename=='pagemanagement'){
-			//var sectionid = $("#pages").val();
-			datastring=datastring+"&"+$('#searchForm').serialize();
-	}else if(filename=='source') {
-		if(document.getElementById("searchBySource_chk").checked) {
-			data+="&searchBySource="+$("#searchBySource_1").val();
-		}
-		if(document.getElementById("searchByAlias_chk").checked) {
-			data+="&searchByAlias="+$("#searchBySource_1").val();
-		}
-		if($("#searchBySource_1").val()!='' && document.getElementById("searchBySource_chk").checked==false && document.getElementById("searchByAlias_chk").checked==false) {
-			data+="&searchBySource="+$("#searchBySource_1").val();			
-		}
-	} else if(filename=='trendkeywords'){
-		/*if(document.getElementById("priority_chk").checked) {
-			data+="&searchByPriority="+$("#searchByKeyword_1").val();
-		}*/
-		if(document.getElementById("keyword_chk").checked) {
-			data+="&searchByKeyword="+$("#searchByKeyword_1").val();
-		}
-		/*if($("#searchByKeyword_1").val()!='' && !document.getElementById("keyword_chk").checked) {
-			data+="&searchByKeyword="+$("#searchByKeyword_1").val();			
-		}*/
-	}
 	//data = data+"&"+$('#searchForm').serialize();
 	var serializedForm = $('#searchForm').serializeArray();
 			$.each(serializedForm , function(i, field) {
@@ -696,28 +630,21 @@ function searchdata(filename,searchtype,data,currpage,lastpage,firstpage,recperp
 
 	datastring=datastring+"&pg="+currpage+"&displastpage="+lastpage+"&dispfirstpage="+firstpage+"&recperpage="+recperpage; //alert(datastring);
 
-	if(filename=='pollpopup' || filename=='photogallerypopup' || filename=='contentpopup' || filename=='videopopup' || filename=='quotepopup') {
+	if (filename=='pollpopup' || filename=='photogallerypopup' || filename=='contentpopup' || filename=='videopopup' || filename=='quotepopup') {
 		$('#searchContainer').html('<div align="center"><img src="../images/ajax-loader.gif" border="0" /></div>'); 
-	}else{
+	} else {
 		$('#mainContainer').html('<div align="center"><img src="../images/ajax-loader.gif" border="0" /></div>'); 
-	}
-	if(filename=='pagemanagement' || filename=='trendmanagement'){
-		callback = enableDrag;
 	}
 	$.ajax({
 	   type: "POST",
-	   url: "get"+filename+".php",
+	   url: "get.php",
 	   data: datastring,
-	   success: function(resultdata){	
-				if(filename=='pollpopup' || filename=='photogallerypopup' || filename=='contentpopup' || filename=='videopopup' || filename=='quotepopup'){
-					$("#searchContainer").html(resultdata); 
-			    }else{
-					$('#mainContainer').html(resultdata); 
-				}
-				if(callback!=undefined && callback !=""){
-						if(typeof(callback)=="string"){
+	   success: function(resultdata) {	
+				$('#mainContainer').html(resultdata); 
+				if(callback != undefined && callback != "") {
+						if (typeof(callback)=="string") {
 							eval(callback)(resultdata);
-						}else{
+						} else {
 							callback(resultdata);
 						}
 				}

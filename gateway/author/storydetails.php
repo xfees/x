@@ -88,7 +88,9 @@ function searchdata(filename,searchtype,data,currpage,lastpage,firstpage,recperp
               <div class="searchdiv">
                 <table border="0" cellspacing="1" cellpadding="2" class="searchTable">
                   <tr>
-                    <td><?php $sel_cat = (Common::l($_POST['searchByCategory'])=='') ? 'Select category' : Common::l($_POST['searchByCategory']); 
+                    <td><?php 
+                                $cmn = new Common();
+                                $sel_cat = (Common::l($_POST['searchByCategory'])=='') ? 'Select category' : Common::l($_POST['searchByCategory']); 
 								echo $cmn->getCategoryCombo("searchByCategory", $sel_cat);	?>
                     </td>
                     <td><input type="text" name="freeTextSearch" id="freeTextSearch" class="inputWizard2 freetext-search" size="10" value="" /></td>
@@ -107,11 +109,9 @@ function searchdata(filename,searchtype,data,currpage,lastpage,firstpage,recperp
               <thead>
                 <tr class="removeheading titlebar">
                   <th width="30%" valign="middle"><div style="float: left; padding: 5px 0 0 10px; ">Headline</div></th>
-                  <th width="10%" valign="middle"><div style="text-align:right; float:left;"><img class="listSeparator" width="2" height="31" border="0" align="absmiddle" src="<?php echo IMAGEPATH;?>/list-separator.gif"></div>
-                    <div style="float: left; padding: 8px 0 0 10px; ">Content Type</div></th>
                   <th width="10%"recperpage valign="middle"><div style="text-align:right; float:left;"><img class="listSeparator" width="2" height="31" border="0" align="absmiddle" src="<?php echo IMAGEPATH;?>/list-separator.gif"></div>
                     <div style="float: left; padding: 8px 0 0 10px; ">Section</div></th>
-                  <?php if($displaypage!='trashcan' &&  RIGHTS != 0 ){?>
+                  <?php if ($displaypage != 'trashcan' && RIGHTS != 0 ) { ?>
                   <th width="5%" valign="middle" class=""><div style="text-align:right; float:left;"><img class="listSeparator" width="2" height="31" border="0" align="absmiddle" src="<?php echo IMAGEPATH;?>/list-separator.gif"></div>
                     <div style="float: left; padding: 8px 0 0 10px; ">Actions</div></th>
                   <?php } ?>

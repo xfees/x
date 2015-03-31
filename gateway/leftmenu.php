@@ -1,6 +1,6 @@
 <div class="hideLeftMenu blackButton" onclick="showHideLeftPanel()"><span> &laquo;</span> Hide Menu</div>
 <?php
-if(isset($_COOKIE['TOPMENU']))	{
+if (isset($_COOKIE['TOPMENU'])) {
 	$leftmenufilename=$filename;
 	if(substr_count($leftmenufilename,"trashcan"))
 	{
@@ -12,11 +12,11 @@ if(isset($_COOKIE['TOPMENU']))	{
 	$result_cokkie->myfetch();
 	$modeleParentId=$result_cokkie->row['module_pid'];
 	$mainModuleName=$leftmenufilename;
-	if($modeleParentId == 0){
+	if ($modeleParentId == 0) {
 		$displayParentName=$result_cokkie->row['displayname'];
 		$parentFolderName=$leftmenufilename;
 		$modeleParentId=$result_cokkie->row['id'];
-	} else{
+	} else {
 		$result_parent=new query();
 		$sql_parent="SELECT name,displayname FROM cms_modules WHERE id=".$modeleParentId;
 		$result_parent->myquery($sql_parent,$m_mysql->conn);
@@ -25,54 +25,28 @@ if(isset($_COOKIE['TOPMENU']))	{
 		$parentFolderName=strtolower($result_parent->row['name']);
 	}
 	
-	if($leftmenufilename == $mainModuleName)
-	{			
-		if(stristr($_SERVER['REQUEST_URI'], '/'.$parentFolderName.'/display.php') == TRUE || stristr($_SERVER['REQUEST_URI'], '/'.$parentFolderName.'/displaytrashcan.php') == TRUE)
-		{
+	if ($leftmenufilename == $mainModuleName) {			
+		if (stristr($_SERVER['REQUEST_URI'], '/'.$parentFolderName.'/display.php') == TRUE || stristr($_SERVER['REQUEST_URI'], '/'.$parentFolderName.'/displaytrashcan.php') == TRUE) {
 			echo '<a href="'.CMSNAVIGATEPATH."/".$parentFolderName.'/display.php" class="selected">&nbsp;&nbsp;'.$displayParentName.'</a>';
-		}
-		else
-		{
+		} else {
 			echo '<a href="'.CMSNAVIGATEPATH."/".$parentFolderName.'/display.php">&nbsp;&nbsp;'.$displayParentName.'</a>';
 		}
-
 		$result_letfdata=new query();
 		$sql_left="SELECT id,name,headingname,displayname FROM cms_modules WHERE module_pid = $modeleParentId ORDER BY display_order ";
 		$result_letfdata->myquery($sql_left,$m_mysql->conn);
-		while($result_letfdata->myfetch())
-		{
+		while($result_letfdata->myfetch()) {
 			$foldername=strtolower($result_letfdata->row['name']);
 			$displayName=$result_letfdata->row['displayname'];
-			if($foldername=='approvedcomment')
-			{
-				$foldername = 'comment';
-				if(stristr($_SERVER['REQUEST_URI'], '/'.$foldername.'/displayapproved.php') == TRUE) 
-				{
-					echo '<a href="'.CMSNAVIGATEPATH."/".$foldername.'/displayapproved.php" class="selected">&nbsp;&nbsp;'.$displayName.'</a>';
-				}
-				else
-				{
-					echo '<a href="'.CMSNAVIGATEPATH."/".$foldername.'/displayapproved.php">&nbsp;&nbsp;'.$displayName.'</a>';
-				}				
-				//$foldername = 'comment';
-			}else if($parentFolderName=='box'){
-					echo (stristr($_SERVER['REQUEST_URI'], '/box/display.php?boxtype='.$foldername)==TRUE) ? '<a href="'.CMSNAVIGATEPATH.'/box/display.php?boxtype='.$foldername.'" class="selected">&nbsp;&nbsp;'.$displayName.'</a>':'<a href="'.CMSNAVIGATEPATH.'/box/display.php?boxtype='.$foldername.'">&nbsp;&nbsp;'.$displayName.'</a>';
-					
-			}else{
-				if(stristr($_SERVER['REQUEST_URI'], '/'.$foldername.'/display.php') == TRUE || stristr($_SERVER['REQUEST_URI'], '/'.$foldername.'/displaytrashcan.php') == TRUE) 
-				{
+			if(stristr($_SERVER['REQUEST_URI'], '/'.$foldername.'/display.php') == TRUE || stristr($_SERVER['REQUEST_URI'], '/'.$foldername.'/displaytrashcan.php') == TRUE) {
 					echo '<a href="'.CMSNAVIGATEPATH."/".$foldername.'/display.php" class="selected">&nbsp;&nbsp;'.$displayName.'</a>';
-				}
-				else
-				{
+			} else {
 					echo '<a href="'.CMSNAVIGATEPATH."/".$foldername.'/display.php">&nbsp;&nbsp;'.$displayName.'</a>';
-				}
-			}//end of else
-			
-		}	//end of while
+			}
+		} //end of while
 		$result_letfdata->myfree();
-	}//end of if
-}?>
+	} //end of if
+}
+?>
 <div class="helplegend">
 <div class="leftPanel_tool">Action Legends</div>
 	<div class="actions clear nobtmborder">
@@ -104,21 +78,13 @@ if(isset($_COOKIE['TOPMENU']))	{
 <script type="text/javascript">
 /*********** admin panel show hide **********/
 function showHideLeftPanel() {
-	$(".leftPanel").toggle(function(){
-		try{
-			if($(".leftPanel").css("display")=='block'){
-//				alert("isIE6:"+isIE6+"  "+$(".leftPanel").css("display"));
+	$(".leftPanel").toggle(function() {
+		try {
+			if($(".leftPanel").css("display")=='block') {
 				$(".leftPanel").css({"display":"table-cell"});
 			}
-		}catch(e){}
+		} catch(e){}
 	});
 	$("#showme").toggle();
 }
-$(document).ready(function() {
-	//append a td
-	//$(".title").after("<div width='2' id='showme' class='showMenuButton' style='display:none' valign='top' onclick='showHideLeftPanel()'><span class='span'><label title='Show Menu'>&raquo;</label></span></div>");
-	//$("#showme").css({top:'150px'})
-	//showHideLeftPanel();
-});
-
 </script>

@@ -1,0 +1,49 @@
+- Data
+    1. Find data entry person, who will add all doctors listings from JD
+        - We should train that person to add data from our CMS
+        - To avoid plagiarism, He/She should mix up data from multiple sites like if info is taken from JD, then its image should be taken other sites like /askme/yellowpages/asklaila
+    2. Need to check which will be Good mobile operator for us whose number we can take who can give us maximum calls for free. - BSNL
+    3. Data entry person should call to every doctor and get his/her consulting fees.
+
+
+- Domain/Company Name (checkfees.in)
+    - Once this is decided we need to register that name
+
+- Platform
+    1. Once CMS is developed upload it somewhere so that DataEntry person can access it and start working on it.
+
+- Functionality
+    1. Elastic search
+    2. Edit fees option, user's can edit fees if it is not updated.
+    3. Take appointment online, for those docs who are ok with that, we can trigger 1 mail to that clinic/hospital which will book appoitment
+    4. Docs bio, his/her little history of carrier
+    
+- CMS Modules
+    1. Author Management (CMS User)
+    2. City
+    3. Category (Doctor/Advocate)
+    4. Content
+        - category_id
+        - category_name
+        - city_id
+        - city_name
+        - author_id
+        - author_name
+        - status (1/0/-1)
+    5. Comment
+    6. User
+    7. Rating
+    8. Static Module
+        - About Us
+        - TOS
+        - Contact Us
+        - Privacy Policy
+        - What we are
+    9. Analitics
+        - Header Section
+        - Footer Section
+    10. Generate HTML
+    
+- Frontend
+    1. 
+

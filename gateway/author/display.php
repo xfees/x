@@ -1,18 +1,18 @@
 <?php
 /***** INCLUDE CONNECTION FILE ************************************************************************************/
 include_once('../config.php');
-$_SESSION['TOPMENU']="author";
-$filename=strtolower($_SESSION['TOPMENU']);
+$_SESSION['TOPMENU'] = CUR_DIR;
+$curDir = ucfirst(CUR_DIR);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<title>Author Management</title>
+	<title><?php echo $curDir ?> Management</title>
 	<?php 
 	include_once '../incHeaderScript.php';
 	?>	 	
-	<script type='text/javascript' src='author.js'></script>
+	<script type='text/javascript' src='module.js'></script>
 	<script type='text/javascript'>	
 	// callback function to bring a hidden box back
 	function callback() {
@@ -26,7 +26,7 @@ $filename=strtolower($_SESSION['TOPMENU']);
 <body>
 <?php include_once(CMSROOTPATH."/topmenu.php");?>
 <div class="content">
-<div class="title">Author Management</div>
+<div class="title"><?php echo $curDir ?> Management</div>
   <table width="100%" border="0" cellspacing="0" cellpadding="0">
     <tr>
       <td valign="top" class="leftPanel"><!-- make this td conditional -->
@@ -60,7 +60,7 @@ $filename=strtolower($_SESSION['TOPMENU']);
 		<td width="10" class="boxMiddleLeft"></td>
 		<td class="boxMiddleMiddle">
 		<div id="tabs" class="padding12">
-			<a  style="cursor:pointer;" href="form.php"><span class="iconAdd">&nbsp;</span><span id="addEditText">Add New</span> <?php echo ucfirst($_SESSION['TOPMENU']);?></a> 
+			<a  style="cursor:pointer;" href="form.php"><span class="iconAdd">&nbsp;</span><span id="addEditText">Add New</span> <?php echo $curDir ?></a> 
 			<a href="javascript:void(0);" onclick="ModalBox.open('<?php print CMSSITEPATH ?>/author/authormail.php?email=all', 500, 400);" title="Email All"><span class="iconEmail">&nbsp;</span><span id="emailAll">Email All</span></a> 
 			<div id="divTrash" style="float: right;">
 				<a href="javascript:" onclick="getTrash()"><span class="iconTrash">&nbsp;</span>Trash Can</a>
@@ -72,11 +72,9 @@ $filename=strtolower($_SESSION['TOPMENU']);
 		<div id="displaycontent" class="padding12">
 			<div class="sorting"></div>
 			<!--content display starts here -->
-			<?php
-					require_once(CMSROOTPATH . '/author/searchform.php');
-			?>
+<?php require_once('searchform.php'); ?>
 			<div id="mainContainer">
-			<?php include_once('getauthor.php'); ?>
+<?php require_once('get.php'); ?>
 			</div>	
 		</div>		
 			<!-- content display ends here -->		
